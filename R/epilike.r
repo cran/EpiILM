@@ -64,7 +64,7 @@ epilike<- function(type,x=NULL,y=NULL,inftime,infperiod=NULL,tmin=NULL,tmax,alph
     
 #### Purely Spatial #####
 
-    if(type=="SI"){
+    if ((type=="SI") && is.null(contact)){
         tmp1 <- .Fortran("like",
         x=as.numeric(x),y=as.numeric(y),tau=as.integer(tau),
         n=as.integer(n),tmin=as.integer(tmin),tmax=as.integer(tmax),
@@ -72,7 +72,7 @@ epilike<- function(type,x=NULL,y=NULL,inftime,infperiod=NULL,tmin=NULL,tmax,alph
         alpha=as.double(alpha), beta=as.double(beta),spark=as.double(spark),
         covmat= as.vector(covmat),val=as.double(val))
     }
-    if(type=="SIR"){
+    if ((type=="SIR") && is.null(contact)){
         tmp1 <- .Fortran("likesir",
         x=as.numeric(x),y=as.numeric(y),tau=as.integer(tau),
         lambda=as.integer(lambda),n=as.integer(n),tmin=as.integer(tmin),

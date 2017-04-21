@@ -106,7 +106,7 @@ lambda <- rep(3,100)
 epidata(type="SIR",n=100, tmax=15, alpha=0.3,beta=5.0, infperiod=lambda, x=x, y=y)
 
 ## Example 3:   SI network model 
-
+\dontrun{
 contact1 <- matrix(rbinom(1000,1,0.1), nrow=100, ncol=100)
 contact2 <- matrix(rbinom(1000,1,0.1), nrow=100, ncol=100)
 diag(contact1[,] ) <- 0
@@ -114,9 +114,8 @@ diag(contact2[,] ) <- 0
 contact <- array(c(contact1,contact2),dim=c(100,100,2))
 epidata(type="SI", n=100, tmax=15, alpha=0.3,beta=c(3.0,5.0), contact=contact)
 
-
 }
-
+}
 \references{
 
 Deardon R, Brooks, S. P., Grenfell, B. T., Keeling, M. J., Tildesley, M. J., Savill, N. J., Shaw, D. J.,  Woolhouse, M. E. (2010). Inference for individual level models of infectious diseases in large populations. \emph{Statistica Sinica}, 20, 239-261.

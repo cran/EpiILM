@@ -40,7 +40,7 @@
 
     integer::i,j,t
     double precision :: u, dx, p
-    double precision :: eu (n,n), Somega(n)
+    double precision :: eu(n,n), Somega(n)
 
 
     !Calculate the distance matrix
@@ -90,7 +90,7 @@
 
     integer::i,j,t
     double precision :: u, dx, p
-    double precision :: eu (n,n), Somega(n)
+    double precision :: eu(n,n), Somega(n)
 
     call initrandomseed()
 

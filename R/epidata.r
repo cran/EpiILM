@@ -76,7 +76,7 @@ Sformula=NULL,x=NULL,y=NULL,inftime=NULL,infperiod=NULL,contact=NULL){
     
 #### Purely Spatial #####
             
-    if (type=="SI"){
+    if ((type=="SI") && is.null(contact)) {
         
         tmp <- .Fortran("dataxy",
         x=as.double(x),y=as.double(y),
@@ -89,7 +89,7 @@ Sformula=NULL,x=NULL,y=NULL,inftime=NULL,infperiod=NULL,contact=NULL){
         result1 <- list(inftime=tmp$tau)
     }
 
-    if (type=="SIR"){
+    if ((type=="SIR") && is.null(contact)){
         
         tmp <- .Fortran("dataxysir",
         n = as.integer(n),tmin = as.integer(tmin),tmax = as.integer(tmax),
