@@ -8,15 +8,17 @@ Monte Carlo Simulation
 Runs an MCMC algorithm forthe estimation of specified model parameters
 }
 \usage{
-epimcmc(type, x=NULL, y=NULL, inftime, tmin=NULL, tmax, infperiod=NULL, niter, alphaini, 
-          
-betaini, sparkini=NULL, Sformula=NULL, contact=NULL, pro.var.a, pro.var.b, 
+epimcmc (type, x = NULL, y = NULL, inftime, tmin = NULL, tmax, infperiod = NULL, niter, 
 
-pro.var.sp=NULL, prioralpha, halfnorm.var.a=NULL, gamma.par.a=NULL, unif.range.a=NULL, 
+         alphaini, betaini, sparkini = NULL, Sformula = NULL, contact = NULL, 
 
-priorbeta, halfnorm.var.b=NULL, gamma.par.b=NULL, unif.range.b=NULL, priorsp=NULL, 
+         pro.var.a, pro.var.b, pro.var.sp = NULL, prioralpha, halfnorm.var.a = NULL, 
 
-halfnorm.var.sp=NULL, gamma.par.sp=NULL, unif.range.sp=NULL)
+         gamma.par.a = NULL, unif.range.a = NULL, priorbeta, halfnorm.var.b = NULL, 
+
+         gamma.par.b = NULL, unif.range.b = NULL, priorsp = NULL, halfnorm.var.sp = NULL, 
+
+         gamma.par.sp = NULL, unif.range.sp = NULL)
 }
 
 \arguments{
@@ -105,20 +107,21 @@ Independent Gaussian random walks are used as the Metropolis-Hastings MCMC propo
 ## Example 1:  spatial SI model 
 # generate 100 individuals
 \dontrun{
-x <- runif(100,0,10)
-y <- runif(100,0,10)
-covariate <- runif(100,0,2)
+x <- runif(100, 0, 10)
 
-out <- epidata(type="SI",n=100, Sformula=~covariate, tmax=15, alpha=c(0.1,0.3), beta=5.0, x=x, y=y)
+y <- runif(100, 0, 10)
+
+covariate <- runif(100, 0, 2)
+
+out <- epidata(type = "SI", n = 100, Sformula = ~covariate, tmax = 15, 
+              alpha = c(0.1, 0.3), beta = 5.0, x = x, y = y)
 
 
-mcout <- epimcmc(type="SI",x=x, y=y, inftime=out$inftime, Sformula=~covariate, 
-
-tmax=15,niter=1000, alphaini=c(0.01,0.01), betaini=0.01, pro.var.a=c(0.01,0.005),
-
-pro.var.b=0.05, prioralpha="halfnormal", halfnorm.var.a=c(10**5,10**5),
-
-priorbeta="halfnormal", halfnorm.var.b=10**5)
+mcout <- epimcmc(type = "SI", x = x, y = y, inftime = out$inftime, Sformula = ~covariate, 
+                tmax = 15, niter = 1000, alphaini = c(0.01, 0.01), betaini = 0.01,
+                pro.var.a = c(0.01, 0.005), pro.var.b = 0.05, 
+                prioralpha = "halfnormal", halfnorm.var.a = c(10**5, 10**5), 
+                priorbeta = "halfnormal", halfnorm.var.b = 10**5)
 }
 }
 

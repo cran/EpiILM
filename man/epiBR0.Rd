@@ -8,9 +8,9 @@ Basic reproduction number (R0)
 Calculates the basic reproduction number for the specified SIR model and data set
 }
 \usage{
-epiBR0(x=NULL, y=NULL, contact=NULL, alpha, beta, spark=NULL, infperiod, 
+epiBR0 (x = NULL, y = NULL, contact = NULL, alpha, beta, spark = NULL, infperiod, 
 
-Sformula=NULL, tmax, niter)
+        Sformula = NULL, tmax, niter)
 } 
 
 \arguments{

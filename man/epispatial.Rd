@@ -5,7 +5,7 @@
 
 \description{Produce spatial plots of epidemicprogression over time}
 
-\usage{epispatial(type, x, y, inftime, removaltime=NULL, time=NULL, tmin=NULL)
+\usage{epispatial (type, x, y, inftime, removaltime = NULL, time = NULL, tmin = NULL)
 }
 
 \arguments{

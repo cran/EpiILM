@@ -6,7 +6,7 @@ Epidemic curves }
 \description{
 Produces graphs of various epidemiccurves}
 \usage{
-epicurve(type, plottype, inftime, removaltime = NULL, tmin = NULL, timepoints=NULL)
+epicurve (type, plottype, inftime, removaltime = NULL, tmin = NULL, timepoints = NULL)
 }
 
 \arguments{

@@ -8,7 +8,7 @@
 Computes the Deviance Information Criterion for individual level models
 }
 \usage{
-epidic(burnin, niter, LLchain, LLpostmean)
+epidic (burnin, niter, LLchain, LLpostmean)
 }
 
 \arguments{

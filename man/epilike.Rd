@@ -8,9 +8,9 @@ Calculates the log likelihood
 Calculates the log likelihood for thespecified individual level model and data set
 }
 \usage{
-epilike(type, x = NULL, y = NULL, inftime, infperiod = NULL, tmin = NULL, tmax, alpha, 
+epilike (type, x = NULL, y = NULL, inftime, infperiod = NULL, tmin = NULL, tmax, alpha, 
 
-beta, spark=NULL, Sformula = NULL, contact = NULL)
+         beta, spark = NULL, Sformula = NULL, contact = NULL)
 }
 
 \arguments{
@@ -67,22 +67,28 @@ Contact network matrix (matrices)
 ## Example 1:  spatial SI model 
 # generate 100 individuals 
 \dontrun{
-x <- runif(100,0,10)
-y <- runif(100,0,10)
-covariate <- runif(100,0,2)
-out <- epidata(type="SI",n=100,Sformula=~covariate,tmax=15,alpha=c(0.1,0.3),beta=5.0,x=x,y=y)
+x <- runif(100, 0, 10)
 
-epilike(type="SI",x=x,y=y,inftime=out$inftime,tmax=15,alpha=c(0.1,0.3),beta=5, Sformula=~covariate)
+y <- runif(100, 0, 10)
+
+covariate <- runif(100, 0, 2)
+
+out <- epidata(type = "SI", n = 100, Sformula = ~covariate, tmax = 15, 
+              alpha = c(0.1, 0.3), beta = 5.0, x = x, y = y)
+
+epilike(type = "SI", x = x, y = y, inftime = out$inftime, tmax = 15, 
+         alpha = c(0.1, 0.3), beta = 5, Sformula = ~covariate)
 }
 ## Example 2: spatial SIR model 
 # generate infectious period (=3) for 100 individuals 
 \dontrun{
-lambda <- rep(3,100)
-out <- epidata(type="SIR",n=100, tmax=15, alpha=0.3,beta=5.0,infperiod=lambda, x=x, y=y)
+lambda <- rep(3, 100)
 
-epilike(type="SIR",x=x,y=y, infperiod=lambda, inftime=out$inftime, 
+out <- epidata(type = "SIR", n = 100, tmax = 15, alpha  =0.3, beta = 5.0,
+              infperiod = lambda, x = x, y = y)
 
-tmax=15, alpha=0.3,beta=5.0)
+epilike(type = "SIR", x = x, y = y, infperiod = lambda, inftime = out$inftime, 
+        tmax = 15, alpha = 0.3, beta = 5.0)
 
 }
 }
