@@ -10,9 +10,12 @@
 !#     Simulates epidemics under spatial and network models with two
 !#     disease types: SI and SIR
 !#
-!# HISTORY:
-!#          Version 1.0: 2017-04-14
-!#          Version 1.1: 2017-04-17
+!# Algorithm based on:
+!#
+!#     Deardon R, Brooks, S. P., Grenfell, B. T., Keeling, M. J., Tildesley,
+!#     M. J., Savill, N. J., Shaw, D. J.,  Woolhouse, M. E. (2010).
+!#     Inference for individual level models of infectious diseases in large
+!#     populations. Statistica Sinica, 20, 239-261.
 !#
 !#     This program is free software; you can redistribute it and/or
 !#     modify it under the terms of the GNU General Public License,
@@ -28,7 +31,6 @@
 !#
 !# Part of the R/EpiILM package
 !# Contains:
-!#            initrandomseed .............. subroutine
 !#            dataxy     .................. subroutine
 !#            dataxysir  .................. subroutine
 !#            datacon    .................. subroutine
@@ -41,27 +43,6 @@
     public :: dataxy, dataxysir, datacon, dataconsir
 
     contains
-
-    subroutine initrandomseed()
-    !The seed for the random number generation method random_number() has been reset
-
-    implicit none
-
-    integer :: i
-    integer :: n
-    integer :: clock
-    integer, dimension(:), allocatable :: seed
-
-    call random_seed(size = n)
-    allocate(seed(n))
-
-    call system_clock(COUNT=clock)
-
-    seed = clock + 37 * (/ (i - 1, i = 1, n) /)
-    call random_seed(PUT = seed)
-
-    deallocate(seed)
-    end subroutine initrandomseed
 
 !######################################################################
 
@@ -80,6 +61,8 @@
     double precision :: u, dx, p
     double precision :: eu(n,n), Somega(n)
 
+
+
     !Calculate the distance matrix
     do i = 1, n
         do j = i, n
@@ -87,8 +70,6 @@
             eu(j,i) = eu(i,j)
         end do
     end do
-
-    call initrandomseed()
 
     Somega = matmul(covmat, alpha) !susceptibility function
 
@@ -104,7 +85,7 @@
               end do
             p = 1.0d0 - exp(-(Somega(i) * dx + spark))
             call random_number(u)
-            if (p>u) then
+            if (p .GT. u) then
               tau(i) = t + 1 !time at which individuals become infected
             end if
             end if
@@ -131,7 +112,6 @@
     double precision :: u, dx, p
     double precision :: eu(n,n), Somega(n)
 
-    call initrandomseed()
 
     !Calculate the distance matrix
     do i = 1, n
@@ -157,7 +137,7 @@
               end do
             p = 1.0d0 - exp(-(Somega(i) * dx + spark))
             call random_number(u)
-            if (p>u) then
+            if (p .GT. u) then
               tau(i) = t + 1  !time at which individuals become infected
               remt(i) = t + 1 + lambda(i)  !time at which individual is removed
             end if
@@ -182,7 +162,6 @@
     integer          :: i, j, t, k
     double precision :: u, dx, p, Somega(n)
 
-    call initrandomseed()
 
     Somega = matmul(covmat, alpha) !susceptibility function
 
@@ -200,7 +179,7 @@
               end do
             p = 1.0d0 - exp(-(Somega(i) * dx + spark))
             call random_number(u)
-            if (p>u) then
+            if (p .GT. u) then
               tau(i) = t + 1  !time at which individuals become infected
             end if
             end if
@@ -226,7 +205,6 @@
     integer          :: i, j, t, k
     double precision :: u, dx, p, Somega(n)
 
-    call initrandomseed()
 
     Somega= matmul(covmat,alpha) !susceptibility function
 
@@ -246,7 +224,7 @@
               end do
             p = 1.0d0 - exp(-(Somega(i) * dx + spark))
             call random_number(u)
-            if (p>u) then
+            if (p .GT. u) then
               tau(i) = t + 1 !time at which individuals become infected
               remt(i) = t + 1 + lambda(i) !time at which individual is removed
             end if

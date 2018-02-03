@@ -15,20 +15,18 @@
 
 epispatial <- function(type, x, y, inftime, removaltime = NULL, time = NULL, tmin = NULL) {
  
-  tau <- inftime
-
 # input argument- error checks
   if (is.null(type) || !(type %in% c("SI", "SIR"))) {
     stop("epiplot: Specify type as \"SI\" or \"SIR\" ", call. = FALSE)
   }
   
-  n <- length(tau)
+  n <- length(inftime)
   
   if ((length(y) != n) || (length(x) != n)) {
     stop('epispatial: Length of x or y is not compatible ')
   }
   if (is.null(removaltime) && type == "SIR") {
-    stop(' epispatial: Specify removal time ')
+    stop(' epispatial: Specify removaltime ')
   }
   if (!is.null(removaltime)) {
       if (length(removaltime) != n) {
@@ -48,11 +46,11 @@ epispatial <- function(type, x, y, inftime, removaltime = NULL, time = NULL, tmi
   
 # plots for susceptible- infected (SI)
   if (type == "SI") {
-    dat <- data.frame(x, y, tau)
+    dat <- data.frame(x, y, inftime)
     # no specific time point (s)
     if (is.null(time)) {
-      for (i in tmin:max(tau)) {
-        xcc <- subset(dat, tau <= i & tau != 0)
+      for (i in tmin:max(inftime)) {
+        xcc <- subset(dat, inftime <= i & inftime != 0)
         plot(x    = x,
              y    = y,
              xlim = c(min(x), max(x)),
@@ -67,7 +65,7 @@ epispatial <- function(type, x, y, inftime, removaltime = NULL, time = NULL, tmi
     # specific time points
     if (!is.null(time)) {
         for (i in 1:length(time)) {
-            xcc <- subset(dat, tau <= time[i] & tau != 0)
+            xcc <- subset(dat, inftime <= time[i] & inftime != 0)
             plot(x    = x,
                  y    = y,
                  xlim = c(min(x), max(x)),
@@ -84,10 +82,10 @@ epispatial <- function(type, x, y, inftime, removaltime = NULL, time = NULL, tmi
 
 # plots for susceptible- infected-removed  (SIR)
   if (type == "SIR") {
-    dat <- data.frame(x, y, tau, removaltime)
+    dat <- data.frame(x, y, inftime, removaltime)
     if (is.null(time)) {
-      for(i in tmin:max(tau)) {
-        xcc <- subset(dat, tau <= i & tau != 0)
+      for(i in tmin:max(inftime)) {
+        xcc <- subset(dat, inftime <= i & inftime != 0)
         plot(x    = x,
              y    = y,
              xlim = c(min(x), max(x)),
@@ -107,7 +105,7 @@ epispatial <- function(type, x, y, inftime, removaltime = NULL, time = NULL, tmi
 # with specific time points
   if (!is.null(time)) {
     for (i in 1:length(time)) {
-      xcc <- subset(dat, tau <= time[i] & tau != 0)
+      xcc <- subset(dat, inftime <= time[i] & inftime != 0)
       plot(x    = x,
            y    = y,
            xlim = c(min(x), max(x)),

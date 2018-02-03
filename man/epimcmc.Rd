@@ -8,17 +8,19 @@ Monte Carlo Simulation
 Runs an MCMC algorithm forthe estimation of specified model parameters
 }
 \usage{
-epimcmc (type, x = NULL, y = NULL, inftime, tmin = NULL, tmax, infperiod = NULL, niter, 
+epimcmc (type, x = NULL, y = NULL, inftime, tmin = NULL, tmax, infperiod = NULL, 
 
-         alphaini, betaini, sparkini = NULL, Sformula = NULL, contact = NULL, 
+         niter, alphaini, betaini, sparkini = NULL, Sformula = NULL, 
 
-         pro.var.a, pro.var.b, pro.var.sp = NULL, prioralpha, halfnorm.var.a = NULL, 
+         contact = NULL, pro.var.a, pro.var.b, pro.var.sp = NULL, prioralpha, 
 
-         gamma.par.a = NULL, unif.range.a = NULL, priorbeta, halfnorm.var.b = NULL, 
+         halfnorm.var.a = NULL, gamma.par.a = NULL, unif.range.a = NULL, priorbeta, 
 
-         gamma.par.b = NULL, unif.range.b = NULL, priorsp = NULL, halfnorm.var.sp = NULL, 
+         halfnorm.var.b = NULL, gamma.par.b = NULL, unif.range.b = NULL, 
 
-         gamma.par.sp = NULL, unif.range.sp = NULL)
+         priorsp = NULL, halfnorm.var.sp = NULL, gamma.par.sp = NULL, 
+
+         unif.range.sp = NULL, tempseed = NULL)
 }
 
 \arguments{
@@ -31,10 +33,9 @@ Susceptible-Infectious-Removed
  \item{y }{Y coordinates of individuals}
  \item{inftime }{Times at which individuals are infected to initialize epidemic simulation}
 \item{tmin}{ The first time point at which the infection occurs, default value is one}
- \item{tmax}{ The last time point of simulation}
+ \item{tmax}{ The last time point at which data is observed}
  \item{infperiod}{Length of infectious period for each individual }
 \item{niter }{Number of MCMC iterations}
-
   \item{alphaini}{Initial value of susceptibility parameter(s)(>0)}
  \item{betaini}{Initial value of spatial parameter(s) (>0) or network parameter (s) (>0) if contact is used}
  \item{sparkini}{Initial value of spark parameter (>=0)}
@@ -85,11 +86,15 @@ Select the prior distribution for spark parameter with the choice of "halfnormal
 
 \item{unif.range.sp}{Uniform prior: Maximum and minimum range for spark}
 
+  \item{tempseed}{
+Integer seed value to initialize the (Fortran) random number generator, default value is  a random seed. 
+}
 
 }
 
 \value{
- \item{Estimates }{MCMC output}
+A list is returned with the following components:
+ \item{Estimates }{MCMC output as \pkg{coda} object} 
 \item{Loglikelihood }{Log likelihood value of each posterior estimate}
 
 }
@@ -133,9 +138,7 @@ Rob Deardon, Xuan Fang, and Grace Pui Suze Kwong (2014).
    
    
 }
-\seealso{
-   \link[mcmcplots]{traplot}
-}
+
 
 
 

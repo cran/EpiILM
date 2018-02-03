@@ -10,7 +10,7 @@ Calculates the basic reproduction number for the specified SIR model and data se
 \usage{
 epiBR0 (x = NULL, y = NULL, contact = NULL, alpha, beta, spark = NULL, infperiod, 
 
-        Sformula = NULL, tmax, niter)
+        Sformula = NULL, tmax, niter, tempseed = NULL)
 } 
 
 \arguments{
@@ -51,9 +51,13 @@ The last time point of simulation
   \item{niter}{
 Number of epidemic simulations to calculate basic reproduction number 
 }
+  \item{tempseed}{
+Integer seed value to initialize the (Fortran) random number generator, default value is  a random seed. 
+}
 }
 
 \value{
+A list is returned with the following components:
 \item{BasicR0}{
 The basic reproduction number value
 }

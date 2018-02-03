@@ -10,9 +10,12 @@
 !#     Calculates log-likelihood for spatial and network individual-level models with two
 !#     disease types: SI and SIR
 !#
-!# HISTORY:
-!#          Version 1.0: 2017-04-14
-!#          Version 1.1: 2017-04-17
+!# Algorithm based on:
+!#
+!#     Deardon R, Brooks, S. P., Grenfell, B. T., Keeling, M. J., Tildesley,
+!#     M. J., Savill, N. J., Shaw, D. J.,  Woolhouse, M. E. (2010).
+!#     Inference for individual level models of infectious diseases in large
+!#     populations. Statistica Sinica, 20, 239-261.
 !#
 !#     This program is free software; you can redistribute it and/or
 !#     modify it under the terms of the GNU General Public License,

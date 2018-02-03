@@ -5,6 +5,12 @@
 #         Vineetha Warriyar. K. V. <vineethawarriyar.kod@ucalgary.ca> and
 #         Rob Deardon <robert.deardon@ucalgary.ca>
 #
+# Based on:
+#                Deardon R, Brooks, S. P., Grenfell, B. T., Keeling, M. J., Tildesley,
+#                M. J., Savill, N. J., Shaw, D. J.,  Woolhouse, M. E. (2010).
+#                Inference for individual level models of infectious diseases in large
+#                populations. Statistica Sinica, 20, 239-261.
+#
 # HISTORY:
 #          Version 1.0: 2017-04-14
 #          Version 1.1: 2017-04-17
@@ -18,11 +24,13 @@ epimcmc <- function (type, x = NULL, y = NULL, inftime, tmin = NULL, tmax,
                Sformula = NULL, contact = NULL, pro.var.a, pro.var.b, pro.var.sp = NULL,
                prioralpha, halfnorm.var.a = NULL, gamma.par.a = NULL, unif.range.a = NULL,
                priorbeta, halfnorm.var.b = NULL, gamma.par.b = NULL, unif.range.b = NULL,
-               priorsp = NULL, halfnorm.var.sp = NULL, gamma.par.sp = NULL, unif.range.sp = NULL) {
+               priorsp = NULL, halfnorm.var.sp = NULL, gamma.par.sp = NULL, unif.range.sp = NULL,
+               tempseed = NULL) {
   
-  # renaming
-  tau    <- inftime
-  lambda <- infperiod
+  
+  if (is.null(tempseed)) {
+      tempseed <- 0
+  }
  
  # error checks for input arguments
   if (is.null(type) || !(type %in% c("SI", "SIR"))) {
@@ -32,25 +40,25 @@ epimcmc <- function (type, x = NULL, y = NULL, inftime, tmin = NULL, tmax,
   ns <- length(alphaini)
   ni <- length(betaini)
   
-  if (!is.vector(tau)) {
-    stop('epimcmc: tau is not a vector')
+  if (!is.vector(inftime)) {
+    stop('epimcmc: inftime is not a vector')
   }
   
-  n <- length(tau)
+  n <- length(inftime)
   
-  if (is.null(lambda) && type == "SIR") {
-    stop(' epimcmc: Specify removal distance,lambda ')
+  if (is.null(infperiod) && type == "SIR") {
+    stop(' epimcmc: Specify removal distance, infperiod ')
   }
   
-  if (!is.null(lambda)) {
-      if (length(lambda) != n) {
-        stop('epimcmc: Length of lambda is not compatible')
+  if (!is.null(infperiod)) {
+      if (length(infperiod) != n) {
+        stop('epimcmc: Length of infperiod is not compatible')
       }
       if (type == "SI") {
         stop('epimcmc: Type must be "SIR"')
       }
   } else {
-    lambda <- rep(0, n)
+   infperiod <- rep(0, n)
   }
   
   if (is.null(contact) &  (is.null(x) || is.null(y))) {
@@ -343,20 +351,50 @@ if (priorbeta == "uniform") {
  
  # Calling fortran subroutine for Purely Spatial models
   if (is.null(contact)) {
-    tmp <- .Fortran("mcmc", tnum=as.integer(tnum), x=as.numeric(x), y=as.numeric(y),
-                    tau=as.integer(tau), n=as.integer(n), lambda=as.integer(lambda),
-                    tmin=as.integer(tmin), tmax=as.integer(tmax), nsim=as.integer(niter),
-                    aalpha=as.numeric(alphaini), ns=as.integer(ns), ni=as.integer(ni),
-                    bbeta=as.double(betaini), covmat=as.vector(covmat), prostda=as.double(prostda),
-                    prostdb=as.double(prostdb), anum=as.integer(anum), bnum=as.integer(bnum),
-                    halfvar=as.double(halfvar), unifmin=as.double(unifmin), unifmax=as.double(unifmax),
-                    gshape=as.double(gshape), gscale=as.double(gscale), halfvarb=as.double(halfvarb),
-                    unifminb=as.double(unifminb), unifmaxb=as.double(unifmaxb), gshapeb=as.double(gshapeb),
-                    gscaleb=as.double(gscaleb), simalpha=matrix(0,nrow=niter,ncol=ns), simbeta=matrix(0,nrow=niter,ncol=ni),
-                    sspark=as.numeric(sparkini), flag=as.integer(flag), prostdsp=as.double(prostdsp),
-                    snum=as.integer(snum), halfvarsp=as.double(halfvarsp), unifminsp=as.double(unifminsp),
-                    unifmaxsp=as.double(unifmaxsp), gshapesp=as.double(gshapesp), gscalesp=as.double(gscalesp),
-                    simspark=as.double(rep(0,niter)), llikeval=as.double(rep(0,niter)))
+    tmp <- .Fortran("mcmc",
+                     tnum = as.integer(tnum),
+                     x = as.numeric(x),
+                     y = as.numeric(y),
+                     tau = as.integer(inftime),
+                     n = as.integer(n),
+                     lambda = as.integer(infperiod),
+                     tmin = as.integer(tmin),
+                     tmax = as.integer(tmax),
+                     nsim = as.integer(niter),
+                     aalpha = as.numeric(alphaini),
+                     ns = as.integer(ns),
+                     ni = as.integer(ni),
+                     bbeta = as.double(betaini),
+                     covmat = as.vector(covmat),
+                     prostda = as.double(prostda),
+                     prostdb = as.double(prostdb),
+                     anum = as.integer(anum),
+                     bnum = as.integer(bnum),
+                     halfvar = as.double(halfvar),
+                     unifmin = as.double(unifmin),
+                     unifmax = as.double(unifmax),
+                     gshape = as.double(gshape),
+                     gscale = as.double(gscale),
+                     halfvarb = as.double(halfvarb),
+                     unifminb = as.double(unifminb),
+                     unifmaxb = as.double(unifmaxb),
+                     gshapeb = as.double(gshapeb),
+                     gscaleb = as.double(gscaleb),
+                     simalpha = matrix(0, nrow = niter, ncol = ns),
+                     simbeta = matrix(0, nrow = niter, ncol = ni),
+                     sspark = as.numeric(sparkini),
+                     flag = as.integer(flag),
+                     prostdsp = as.double(prostdsp),
+                     snum = as.integer(snum),
+                     halfvarsp = as.double(halfvarsp),
+                     unifminsp = as.double(unifminsp),
+                     unifmaxsp = as.double(unifmaxsp),
+                     gshapesp = as.double(gshapesp),
+                     gscalesp = as.double(gscalesp),
+                     simspark = as.double(rep(0,niter)),
+                     llikeval = as.double(rep(0,niter)),
+                     tempseed = as.integer(tempseed))
+                     
     if (flag == 0) {
         result        <- data.frame(ALPHA = tmp$simalpha, BETA = tmp$simbeta)
         Loglikelihood <- tmp$llikeval
@@ -373,19 +411,49 @@ if (priorbeta == "uniform") {
       }
     network <- array(contact, c(n, n, ni))
     
-    tmp <- .Fortran("conmcmc", tnum=as.integer(tnum), tau=as.integer(tau), n=as.integer(n),
-                    lambda=as.integer(lambda), tmin=as.integer(tmin), tmax=as.integer(tmax), nsim=as.integer(niter),
-                    aalpha=as.numeric(alphaini), ns=as.integer(ns), ni=as.integer(ni), bbeta=as.double(betaini),
-                    covmat=as.vector(covmat), network=as.vector(network), prostda=as.double(prostda),
-                    prostdb=as.double(prostdb), anum=as.integer(anum), bnum=as.integer(bnum),
-                    halfvar=as.double(halfvar), unifmin=as.double(unifmin), unifmax=as.double(unifmax),
-                    gshape=as.double(gshape), gscale=as.double(gscale), halfvarb=as.double(halfvarb),
-                    unifminb=as.double(unifminb), unifmaxb=as.double(unifmaxb), gshapeb=as.double(gshapeb),
-                    gscaleb=as.double(gscaleb), simalpha=matrix(0,nrow=niter,ncol=ns), simbeta=matrix(0,nrow=niter,ncol=ni),
-                    sspark=as.numeric(sparkini), flag=as.integer(flag), prostdsp=as.double(prostdsp),
-                    snum=as.integer(snum), halfvarsp=as.double(halfvarsp), unifminsp=as.double(unifminsp),
-                    unifmaxsp=as.double(unifmaxsp), gshapesp=as.double(gshapesp), gscalesp=as.double(gscalesp),
-                    simspark=as.double(rep(0,niter)), llikeval=as.double(rep(0,niter)))
+    tmp <- .Fortran("conmcmc",
+                    tnum = as.integer(tnum),
+                    tau = as.integer(inftime),
+                    n = as.integer(n),
+                    lambda = as.integer(infperiod),
+                    tmin = as.integer(tmin),
+                    tmax = as.integer(tmax),
+                    nsim = as.integer(niter),
+                    aalpha = as.numeric(alphaini),
+                    ns = as.integer(ns),
+                    ni = as.integer(ni),
+                    bbeta = as.double(betaini),
+                    covmat = as.vector(covmat),
+                    network = as.vector(network),
+                    prostda = as.double(prostda),
+                    prostdb = as.double(prostdb),
+                    anum = as.integer(anum),
+                    bnum = as.integer(bnum),
+                    halfvar = as.double(halfvar),
+                    unifmin = as.double(unifmin),
+                    unifmax = as.double(unifmax),
+                    gshape = as.double(gshape),
+                    gscale = as.double(gscale),
+                    halfvarb = as.double(halfvarb),
+                    unifminb = as.double(unifminb),
+                    unifmaxb = as.double(unifmaxb),
+                    gshapeb = as.double(gshapeb),
+                    gscaleb = as.double(gscaleb),
+                    simalpha = matrix(0, nrow = niter, ncol = ns),
+                    simbeta = matrix(0, nrow = niter, ncol = ni),
+                    sspark = as.numeric(sparkini),
+                    flag = as.integer(flag),
+                    prostdsp = as.double(prostdsp),
+                    snum = as.integer(snum),
+                    halfvarsp = as.double(halfvarsp),
+                    unifminsp = as.double(unifminsp),
+                    unifmaxsp = as.double(unifmaxsp),
+                    gshapesp = as.double(gshapesp),
+                    gscalesp = as.double(gscalesp),
+                    simspark = as.double(rep(0, niter)),
+                    llikeval = as.double(rep(0, niter)),
+                    tempseed = as.integer(tempseed))
+                    
     if (flag == 0) {
         result       <- data.frame(ALPHA = tmp$simalpha, BETA = tmp$simbeta)
        Loglikelihood <- tmp$llikeval
@@ -394,10 +462,16 @@ if (priorbeta == "uniform") {
         Loglikelihood <- tmp$llikeval
     }
   }
-  # mcmc results
+  # mcmc result as a coda object
+  result <- coda::mcmc(result)
   list(Estimates = result, Loglikelihood = Loglikelihood)
+
+
 # End of function
 }
+
+
+
 
 
 

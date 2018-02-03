@@ -14,21 +14,23 @@
 ################################################################################
 
 epiBR0 <- function(x = NULL, y = NULL, contact = NULL, alpha, beta,
-                  spark = NULL, infperiod, Sformula = NULL, tmax, niter) {
-  
-  # renaming
-  lambda <- infperiod
-  ns     <- length(alpha)
-  ni     <- length(beta)
-  
+                  spark = NULL, infperiod, Sformula = NULL, tmax, niter, tempseed = NULL) {
+    
   # Error checks for input arguments
   if (is.null(contact) &  (is.null(x) || is.null(y))) {
     stop('epiBR0: Specify contact network or x, y coordinates')
   }
   
+  if (is.null(tempseed)) {
+      tempseed <- 0
+  }
+  
   if (is.null(spark)) {
        spark <- 0
   }
+  
+  ns     <- length(alpha)
+  ni     <- length(beta)
   
   if (!is.null(x)) {
     n <- length(x)
@@ -42,8 +44,8 @@ epiBR0 <- function(x = NULL, y = NULL, contact = NULL, alpha, beta,
     n <- dim(contact)[1]
    }
   
-  if (length(lambda) != n) {
-    stop('epiBR0: Length of lambda is not compatible')
+  if (length(infperiod) != n) {
+    stop('epiBR0: Length of infperiod is not compatible')
   }
   
   # formula for susceptibility function
@@ -75,18 +77,45 @@ epiBR0 <- function(x = NULL, y = NULL, contact = NULL, alpha, beta,
   val <- 0.0
   # Calling Fortran subroutines : contact network model
   if (!is.null(contact)) {
-    tmp <- .Fortran("rconsir", n=as.integer(n), tmax=as.integer(tmax), ns=as.integer(ns),  ni=as.integer(ni),
-                    lambda=as.integer(lambda), alpha=as.numeric(alpha), beta=as.numeric(beta), spark=as.numeric(spark),
-                    covmat = as.vector(covmat), network=as.vector(network), sim=as.integer(niter),val= as.double(val),
-                    countinf = as.integer(rep(0,niter)))
-  result1 <- list(BasicR0 =tmp$val, simulated_BR0 = tmp$countinf)
+    tmp <- .Fortran("rconsir",
+                    n = as.integer(n),
+                    tmax = as.integer(tmax),
+                    ns = as.integer(ns),
+                    ni = as.integer(ni),
+                    lambda = as.integer(infperiod),
+                    alpha = as.numeric(alpha),
+                    beta = as.numeric(beta),
+                    spark = as.numeric(spark),
+                    covmat = as.vector(covmat),
+                    network = as.vector(network),
+                    sim = as.integer(niter),
+                    val = as.double(val),
+                    countinf = as.integer(rep(0,niter)),
+                    tempseed = as.integer(tempseed))
+                    
+  result1 <- list(BasicR0 = tmp$val,
+                  simulated_BR0 = tmp$countinf)
   } else {
     # Calling Fortran subroutines : spatial model
-    tmp <- .Fortran("rxysir", n=as.integer(n), tmax=as.integer(tmax), ns=as.integer(ns),
-                    ni=as.integer(ni), alpha=as.numeric(alpha), beta=as.numeric(beta), spark=as.numeric(spark),
-                    covmat=as.vector(covmat), lambda=as.integer(lambda), x=as.double(x), y=as.double(y),
-                    sim=as.integer(niter), val=as.double(val), countinf=as.integer(rep(0,niter)))
-  result1 <- list(BasicR0 = tmp$val, simulated_BR0 = tmp$countinf)
+    tmp <- .Fortran("rxysir",
+                     n = as.integer(n),
+                     tmax = as.integer(tmax),
+                     ns = as.integer(ns),
+                     ni = as.integer(ni),
+                     alpha = as.numeric(alpha),
+                     beta = as.numeric(beta),
+                     spark = as.numeric(spark),
+                     covmat = as.vector(covmat),
+                     lambda = as.integer(infperiod),
+                     x = as.double(x),
+                     y = as.double(y),
+                     sim = as.integer(niter),
+                     val = as.double(val),
+                     countinf = as.integer(rep(0,niter)),
+                     tempseed = as.integer(tempseed))
+                     
+  result1 <- list(BasicR0 = tmp$val,
+                  simulated_BR0 = tmp$countinf)
   }
   return(result1)
   }

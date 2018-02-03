@@ -59,6 +59,7 @@ Length of infectious period for each individual
   \item{contact}{
 Contact network matrix (matrices)
 }
+
 }
 
 
@@ -78,8 +79,10 @@ where \eqn{P(i,t)} is the probability that susceptible individual i is infected 
 
 }
 \value{
+
 \item{inftime }{Times at which individuals become infected/infectious}
-\item{removaltime}{Times at which individuals are removed} 
+
+\item{removaltime}{Times at which individuals are removed, only when \code{type = "SIR"} is specified.} 
 }
 
 \examples{

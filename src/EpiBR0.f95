@@ -39,34 +39,31 @@
 
     contains
 
-    subroutine initrandomseed()
-    !The seed for the random number generation method random_number() has been reset
+!######################################################################
+
+    subroutine initrandomseed(tempseed)
+    !The seed for the random number generation method
     implicit none
 
-    integer :: i
     integer :: n
-    integer :: clock
+    integer, intent(in) :: tempseed
     integer, dimension(:), allocatable :: seed
 
-    call random_seed(size = n)
-    allocate(seed(n))
+        call random_seed(size = n)
+        allocate(seed(n))
+        seed = tempseed
+        call random_seed(put = seed)
 
-    call system_clock(COUNT=clock)
-
-    seed = clock + 37 * (/ (i - 1, i = 1, n) /)
-    call random_seed(PUT = seed)
-
-    deallocate(seed)
     end subroutine initrandomseed
 
 !######################################################################
 
     subroutine rxysir (n, tmax, ns, ni, alpha, beta, spark, covmat, lambda, &
-                       & x, y, sim, val, countinf)  bind(C, name="rxysir_")
+                       & x, y, sim, val, countinf, tempseed)  bind(C, name="rxysir_")
     !Calculates the basic reproduction number under the spatial model
     implicit none
 
-    integer (C_INT), intent(in)  :: n, tmax, ns, ni, sim
+    integer (C_INT), intent(in)  :: n, tmax, ns, ni, sim, tempseed
     integer (C_INT), intent(in) :: lambda(n)                  !infperiod
 
     real (C_DOUBLE), intent(in) :: alpha(ns), beta(ni), spark !parameters
@@ -80,7 +77,10 @@
     double precision :: u, dx, p
     double precision :: eu(n,n), Somega(n)
 
-    call initrandomseed()
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
 
     !Calculate the distance matrix
     do i = 1,n
@@ -95,7 +95,7 @@
     do j = 1,sim  !simulation starts here
 
     call random_number(u)
-    A = int((u * tmax) + 1)  !random initialization for first infection
+    A = int((u * (n-1) + 1))  !random initialization for first infection
     do i = 1,n
         tau(i) = 0
     end do
@@ -136,11 +136,11 @@
 !######################################################################
 
     subroutine rconsir(n, tmax, ns, ni, lambda, alpha, beta, spark, covmat, &
-                & network, sim, val, countinf) bind(C, name="rconsir_")
+                & network, sim, val, countinf, tempseed) bind(C, name="rconsir_")
     !Calculates the basic reproduction number under the contact network model
     implicit none
 
-    integer (C_INT),intent(in)  :: n, tmax, ns, ni, sim
+    integer (C_INT),intent(in)  :: n, tmax, ns, ni, sim, tempseed
     integer (C_INT),intent(in)  :: lambda(n)                   !infperiod
     real (C_DOUBLE), intent(in) :: alpha(ns), beta(ni), spark  !parameter
     real (C_DOUBLE), intent(in) :: network(n, n, ni)           !contact network
@@ -152,14 +152,17 @@
     integer          :: i, j, t, k, tau(n), A
     double precision :: u, dx, p, Somega(n)
 
-    call initrandomseed()
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
 
     Somega = matmul(covmat,alpha) !susceptibility function
 
     do j = 1, sim  !simulation starts
 
     call random_number(u)
-    A = int((u * tmax) + 1) !random initialization for first infection
+    A = int((u * (n-1) + 1)) !random initialization for first infection
     do i = 1, n
         tau(i) = 0
     end do

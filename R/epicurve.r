@@ -15,8 +15,6 @@
 
 epicurve <- function(type, plottype, inftime, removaltime = NULL, tmin = NULL, timepoints = NULL) {
   
-  tau <- inftime
-  
   # Error checks for input arguments
   if (is.null(type) || !(type %in% c("SI", "SIR"))) {
     stop("epicurve: Specify type as \"SI\" or \"SIR\" ", call. = FALSE)
@@ -26,7 +24,7 @@ epicurve <- function(type, plottype, inftime, removaltime = NULL, tmin = NULL, t
     stop("epicurve: Specify plottype as \"complete\" , \"susceptible\",\"totalinfect\" or  \"newinfect\"", call. = FALSE)
   }
   
-  n <- length(tau)
+  n <- length(inftime)
   
   if (is.null(removaltime) && type == "SIR") {
     stop(' epicurve: Specify removal time')
@@ -50,14 +48,14 @@ epicurve <- function(type, plottype, inftime, removaltime = NULL, tmin = NULL, t
   sus      <- rep(0)
   newinf   <- rep(0)
   removed  <- rep(0)
-  tmax     <- max(tau)
+  tmax     <- max(inftime)
   time     <- rep(tmin:tmax)
   
   # plot for Susceptible-Infectious (SI)
   if (type == "SI") {
     for (i in tmin:tmax) {
-      newinf[i] <- length(tau[tau==i])
-      xc   <- subset(tau, tau <= i & tau != 0)
+      newinf[i] <- length(inftime[inftime==i])
+      xc   <- subset(inftime, inftime <= i & inftime != 0)
       totalinf[i] <- length(xc)
       sus[i] <- n - totalinf[i]
     }
@@ -109,19 +107,19 @@ epicurve <- function(type, plottype, inftime, removaltime = NULL, tmin = NULL, t
   
   # Plot for Susceptible-Infectious-Removed (SIR)
   if (type == "SIR") {
-    dat <- data.frame(tau, removaltime)
+    dat <- data.frame(inftime, removaltime)
     for (i in tmin:tmax) {
-      xcc <- subset(dat, tau <= i & tau != 0 & i<removaltime)
-      totalinf[i] <- length(xcc$tau)
+      xcc <- subset(dat, inftime <= i & inftime != 0 & i<removaltime)
+      totalinf[i] <- length(xcc$inftime)
     }
     for (i in tmin:tmax) {
-      newinf[i] <- length(tau[tau==i])
+      newinf[i] <- length(inftime[inftime==i])
     }
     for (i in tmin:tmax) {
-      xcc <- subset(dat, tau<=i & tau != 0)
+      xcc <- subset(dat, inftime<=i & inftime != 0)
       xc <- subset(xcc, i >= removaltime)
-      removed[i] <- length(xc$tau)
-      sus[i] <- n - length(xcc$tau)
+      removed[i] <- length(xc$inftime)
+      sus[i] <- n - length(xcc$inftime)
     }
     if (tmin>1) {
       newinf   <- newinf[tmin:tmax]

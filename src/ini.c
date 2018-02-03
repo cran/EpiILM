@@ -9,7 +9,7 @@
  */
 
 /* .Fortran calls */
-extern void F77_NAME(conmcmc)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(conmcmc)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(datacon)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(dataconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(dataxy)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
@@ -18,12 +18,12 @@ extern void F77_NAME(like)(void *, void *, void *, void *, void *, void *, void 
 extern void F77_NAME(likecon)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(likeconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(likesir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(mcmc)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(rconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(rxysir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(mcmc)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(rconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(rxysir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 
 static const R_FortranMethodDef FortranEntries[] = {
-    {"conmcmc",    (DL_FUNC) &F77_NAME(conmcmc),    40},
+    {"conmcmc",    (DL_FUNC) &F77_NAME(conmcmc),    41},
     {"datacon",    (DL_FUNC) &F77_NAME(datacon),    11},
     {"dataconsir", (DL_FUNC) &F77_NAME(dataconsir), 13},
     {"dataxy",     (DL_FUNC) &F77_NAME(dataxy),     12},
@@ -32,9 +32,9 @@ static const R_FortranMethodDef FortranEntries[] = {
     {"likecon",    (DL_FUNC) &F77_NAME(likecon),    12},
     {"likeconsir", (DL_FUNC) &F77_NAME(likeconsir), 13},
     {"likesir",    (DL_FUNC) &F77_NAME(likesir),    14},
-    {"mcmc",       (DL_FUNC) &F77_NAME(mcmc),       41},
-    {"rconsir",    (DL_FUNC) &F77_NAME(rconsir),    13},
-    {"rxysir",     (DL_FUNC) &F77_NAME(rxysir),     14},
+    {"mcmc",       (DL_FUNC) &F77_NAME(mcmc),       42},
+    {"rconsir",    (DL_FUNC) &F77_NAME(rconsir),    14},
+    {"rxysir",     (DL_FUNC) &F77_NAME(rxysir),     15},
     {NULL, NULL, 0}
 };
 
