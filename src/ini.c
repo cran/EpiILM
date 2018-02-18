@@ -10,10 +10,10 @@
 
 /* .Fortran calls */
 extern void F77_NAME(conmcmc)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(datacon)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(dataconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(dataxy)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-extern void F77_NAME(dataxysir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(datacon)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(dataconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(dataxy)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
+extern void F77_NAME(dataxysir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(like)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(likecon)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
 extern void F77_NAME(likeconsir)(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
@@ -24,10 +24,10 @@ extern void F77_NAME(rxysir)(void *, void *, void *, void *, void *, void *, voi
 
 static const R_FortranMethodDef FortranEntries[] = {
     {"conmcmc",    (DL_FUNC) &F77_NAME(conmcmc),    41},
-    {"datacon",    (DL_FUNC) &F77_NAME(datacon),    11},
-    {"dataconsir", (DL_FUNC) &F77_NAME(dataconsir), 13},
-    {"dataxy",     (DL_FUNC) &F77_NAME(dataxy),     12},
-    {"dataxysir",  (DL_FUNC) &F77_NAME(dataxysir),  14},
+    {"datacon",    (DL_FUNC) &F77_NAME(datacon),    12},
+    {"dataconsir", (DL_FUNC) &F77_NAME(dataconsir), 14},
+    {"dataxy",     (DL_FUNC) &F77_NAME(dataxy),     13},
+    {"dataxysir",  (DL_FUNC) &F77_NAME(dataxysir),  15},
     {"like",       (DL_FUNC) &F77_NAME(like),       13},
     {"likecon",    (DL_FUNC) &F77_NAME(likecon),    12},
     {"likeconsir", (DL_FUNC) &F77_NAME(likeconsir), 13},

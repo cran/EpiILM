@@ -9,9 +9,6 @@
 !#
 !#     Calculates the basic reproduction number for the specified SIR model and data
 !#
-!# HISTORY:
-!#          Version 1.0: 2017-04-14
-!#          Version 1.1: 2017-04-17
 !#
 !#     This program is free software; you can redistribute it and/or
 !#     modify it under the terms of the GNU General Public License,
@@ -95,7 +92,7 @@
     do j = 1,sim  !simulation starts here
 
     call random_number(u)
-    A = int((u * (n-1) + 1))  !random initialization for first infection
+    A = int(u * n) + 1  !random initialization for first infection
     do i = 1,n
         tau(i) = 0
     end do
@@ -162,7 +159,7 @@
     do j = 1, sim  !simulation starts
 
     call random_number(u)
-    A = int((u * (n-1) + 1)) !random initialization for first infection
+    A = int(u * n) + 1 !random initialization for first infection
     do i = 1, n
         tau(i) = 0
     end do

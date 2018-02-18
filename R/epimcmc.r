@@ -11,9 +11,6 @@
 #                Inference for individual level models of infectious diseases in large
 #                populations. Statistica Sinica, 20, 239-261.
 #
-# HISTORY:
-#          Version 1.0: 2017-04-14
-#          Version 1.1: 2017-04-17
 #
 # Free software under the terms of the GNU General Public License, version 2,
 # a copy of which is available at http://www.r-project.org/Licenses/.

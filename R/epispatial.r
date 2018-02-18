@@ -5,9 +5,6 @@
 #         Vineetha Warriyar. K. V. <vineethawarriyar.kod@ucalgary.ca> and
 #         Rob Deardon <robert.deardon@ucalgary.ca>
 #
-# HISTORY:
-#          Version 1.0: 2017-04-14
-#          Version 1.1: 2017-04-17
 #
 # Free software under the terms of the GNU General Public License, version 2,
 # a copy of which is available at http://www.r-project.org/Licenses/.

@@ -16,11 +16,16 @@
 ################################################################################
 
 epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sformula = NULL,
-                    x = NULL, y = NULL, inftime = NULL, infperiod = NULL, contact = NULL) {
+                    x = NULL, y = NULL, inftime = NULL, infperiod = NULL, contact = NULL,
+                    tempseed = NULL) {
 
   # Error checks for input arguments
   if (is.null(type) || !(type %in% c("SI", "SIR"))) {
        stop("Specify type as \"SI\" or \"SIR\" ", call. = FALSE)
+  }
+  
+  if (is.null(tempseed)) {
+      tempseed <- 0
   }
   
   ns <- length(alpha)
@@ -44,21 +49,18 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
     }
   }
   
-  # random selection for initial infection
-  A <- as.integer((n-1) * runif(1) + 1)
   if (!is.null(inftime)) {
       if ((length(inftime) != n)) {
         stop('epidata: Length of inftime is not compatible ')
       }
   } else {
-   inftime <- rep(0, n)
-   
-   # Initialize infectious state
-   inftime[A] <- tmin
+        inftime <- rep(0, n)
   }
+  
   if (is.null(infperiod) && type == "SIR") {
-    stop(' epidata: Specify removal distance,infperiod ')
+    stop(' epidata: Specify removal distance, infperiod ')
   }
+  
   if (!is.null(infperiod)) {
       if (length(infperiod) != n) {
         stop('epidata: Length of infperiod is not compatible')
@@ -66,8 +68,7 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
       if (type == "SI") {
         stop('epidata: Type must be "SIR"')
       }
-    remt    <- rep(0, n)
-    remt[A] <- inftime[A] + infperiod[A]
+       remt <- rep(0, n)
   }
  
  # formula for susceptibility (covariate) function
@@ -104,7 +105,8 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
                      beta = as.numeric(beta),
                      spark = as.numeric(spark),
                      covmat = as.vector(covmat),
-                     tau = as.integer(inftime)
+                     tau = as.integer(inftime),
+                     tempseed = as.integer(tempseed)
                      )
                      
     result1 <- list(inftime = tmp$tau)
@@ -126,7 +128,8 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
                      x = as.double(x),
                      y = as.double(y),
                      tau = as.integer(inftime),
-                     remt = as.integer(remt)
+                     remt = as.integer(remt),
+                     tempseed = as.integer(tempseed)
                      )
                      
     result1 <- list(inftime = tmp$tau, removaltime = tmp$remt)
@@ -151,7 +154,8 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
                      spark = as.numeric(spark),
                      covmat = as.vector(covmat),
                      network = as.vector(network),
-                     tau = as.integer(inftime)
+                     tau = as.integer(inftime),
+                     tempseed = as.integer(tempseed)
                      )
                      
     result1 <- list(inftime = tmp$tau)
@@ -172,7 +176,8 @@ epidata <- function(type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sform
                      covmat = as.vector(covmat),
                      network = as.vector(network),
                      tau = as.integer(inftime),
-                     remt = as.integer(remt)
+                     remt = as.integer(remt),
+                     tempseed = as.integer(tempseed)
                      )
                     
     result1 <- list(inftime = tmp$tau, removaltime = tmp$remt)

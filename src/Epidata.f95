@@ -35,6 +35,7 @@
 !#            dataxysir  .................. subroutine
 !#            datacon    .................. subroutine
 !#            dataconsir .................. subroutine
+!#            initrandomseed  .............. subroutine
 !######################################################################
 
     module subprograms
@@ -46,22 +47,49 @@
 
 !######################################################################
 
+    subroutine initrandomseed(tempseed)
+    !The seed for the random number generation method
+    implicit none
+
+    integer :: n
+    integer, intent(in) :: tempseed
+    integer, dimension(:), allocatable :: seed
+
+    call random_seed(size = n)
+    allocate(seed(n))
+    seed = tempseed
+    call random_seed(put = seed)
+
+    end subroutine initrandomseed
+
+!######################################################################
+
     subroutine dataxy (x, y, n, tmin, tmax, ns, ni, alpha, beta, spark, &
-                       & covmat, tau) bind(C, name="dataxy_")
+                       & covmat, tau, tempseed) bind(C, name="dataxy_")
     !Epidemic simulation under purely spatial model: SI
     implicit none
 
-    integer (C_INT), intent(in)    :: n, tmax, ns, ni, tmin
+    integer (C_INT), intent(in)    :: n, tmax, ns, ni, tmin, tempseed
     real (C_DOUBLE), intent(in)    :: alpha(ns), beta(ni), spark !parameters
     real (C_DOUBLE), intent(in)    :: covmat(n,ns)               !covariates
     real (C_DOUBLE), intent(in)    :: x(n), y(n)                 !locations
     integer (C_INT), intent(inout) :: tau(n)                     !infection times
 
-    integer          :: i, j, t
+    integer          :: i, j, t, A
     double precision :: u, dx, p
     double precision :: eu(n,n), Somega(n)
 
 
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
+
+    if ( ALL( tau == 0 ) )then
+    call random_number(u)
+    A = int(u * n) + 1  !Initialize infectious state
+    tau(A) = tmin
+    end if
 
     !Calculate the distance matrix
     do i = 1, n
@@ -97,21 +125,41 @@
 !######################################################################
 
     subroutine dataxysir (n, tmin, tmax, ns, ni, alpha, beta, spark, covmat, &
-                         & lambda, x, y, tau, remt) bind(C, name="dataxysir_")
+                    & lambda, x, y, tau, remt, tempseed) bind(C, name="dataxysir_")
     !Epidemic simulation under purely spatial model: SIR
     implicit none
 
-    integer (C_INT), intent(in)     :: n, tmax, ns, ni, tmin
+    integer (C_INT), intent(in)     :: n, tmax, ns, ni, tmin, tempseed
     integer (C_INT), intent(inout)  :: lambda(n)                  !infperiod
     real (C_DOUBLE), intent(in)     :: alpha(ns), beta(ni), spark !parameters
     real (C_DOUBLE), intent(in)     :: covmat(n,ns)               !covariates
     real (C_DOUBLE), intent(in)     :: x(n), y(n)                 !locations
     integer (C_INT), intent(inout)  :: remt(n), tau(n)            !removal time and inftime
 
-    integer          :: i, j, t
+    integer          :: i, j, t, A
     double precision :: u, dx, p
     double precision :: eu(n,n), Somega(n)
 
+
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
+
+    if ( ALL( tau .EQ. 0 ) )then
+        call random_number(u)
+        A = int(u * n) + 1  !Initialize infectious state
+        tau(A) = tmin
+        remt(A) = tau(A) + lambda(A)
+    else
+        do i = 1, n
+            if (tau(i) .NE. 0) then
+                remt(i) = tau(i) + lambda(i)
+            else
+                 remt(i) = tau(i)
+            end if
+        end do
+   end if
 
     !Calculate the distance matrix
     do i = 1, n
@@ -150,18 +198,29 @@
 !######################################################################
 
     subroutine datacon(n, tmin, tmax, ns, ni, alpha, beta, &
-                      & spark, covmat, network, tau) bind(C, name="datacon_")
+                & spark, covmat, network, tau, tempseed) bind(C, name="datacon_")
     !Epidemic simulation under contact network model: SI
     implicit none
 
-    integer (C_INT), intent(in)    :: n, ns, ni, tmax, tmin
+    integer (C_INT), intent(in)    :: n, ns, ni, tmax, tmin, tempseed
     real (C_DOUBLE), intent(in)    :: alpha(ns), beta(ni), spark    !parameters
     real (C_DOUBLE), intent(in)    :: network(n,n,ni), covmat(n,ns) !network and covariates
     integer (C_INT), intent(inout) :: tau(n)                        !inftime
 
-    integer          :: i, j, t, k
+    integer          :: i, j, t, k, A
     double precision :: u, dx, p, Somega(n)
 
+
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
+
+    if ( ALL( tau == 0 ) )then
+        call random_number(u)
+        A = int(u * n) + 1  !Initialize infectious state
+        tau(A) = tmin
+    end if
 
     Somega = matmul(covmat, alpha) !susceptibility function
 
@@ -191,20 +250,41 @@
 !######################################################################
 
     subroutine dataconsir(n, tmin, tmax, ns, ni, lambda, alpha, beta, &
-                & spark, covmat, network, tau, remt) bind(C, name="dataconsir_")
+                & spark, covmat, network, tau, remt, tempseed) bind(C, name="dataconsir_")
     !Epidemic simulation under contact network model: SIR
     implicit none
 
-    integer (C_INT), intent(in)     :: n, tmax, ns, ni, tmin
+    integer (C_INT), intent(in)     :: n, tmax, ns, ni, tmin, tempseed
     integer (C_INT), intent(in)     :: lambda(n)                     !infectious period
     real (C_DOUBLE), intent(in)     :: alpha(ns), beta(ni), spark    !parameters
     real (C_DOUBLE), intent(in)     :: network(n,n,ni), covmat(n,ns) !network and covariates
     integer (C_INT), intent(inout)  :: tau(n)                        !infection times
     integer (C_INT), intent(inout)  :: remt(n)                       !removal time
 
-    integer          :: i, j, t, k
+    integer          :: i, j, t, k, A
     double precision :: u, dx, p, Somega(n)
 
+
+
+    !initialzing random seed
+    if (tempseed .NE. 0) then
+      call initrandomseed(tempseed)
+    end if
+
+    if ( ALL( tau .EQ. 0 ) )then
+        call random_number(u)
+        A = int(u * n) + 1  !Initialize infectious state
+        tau(A) = tmin
+        remt(A) = tau(A) + lambda(A)
+    else
+        do i = 1, n
+            if (tau(i) .NE. 0) then
+                remt(i) = tau(i) + lambda(i)
+            else
+                remt(i) = tau(i)
+            end if
+        end do
+    end if
 
     Somega= matmul(covmat,alpha) !susceptibility function
 

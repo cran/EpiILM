@@ -10,7 +10,9 @@ This function allows the user to simulate epidemics under different models and s
 \usage{
 epidata (type, n, tmin = NULL, tmax, alpha, beta, spark = NULL, Sformula = NULL, 
 
-         x = NULL, y = NULL, inftime = NULL, infperiod = NULL, contact = NULL)
+         x = NULL, y = NULL, inftime = NULL, infperiod = NULL, contact = NULL, 
+ 
+         tempseed = NULL)
 }
 
 \arguments{
@@ -59,6 +61,10 @@ Length of infectious period for each individual
   \item{contact}{
 Contact network matrix (matrices)
 }
+ \item{tempseed}{
+Integer seed value to initialize the (Fortran) random number generator, default value is  a random seed. 
+}
+
 
 }
 
