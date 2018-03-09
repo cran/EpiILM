@@ -61,9 +61,9 @@ Select the prior distribution for alpha parameter(s) with the choice of "halfnor
 
 \item{halfnorm.var.a}{Half normal prior variance for alpha}
 
-\item{gamma.par.a}{Gamma  prior: shape and scale parameters for alpha}
+\item{gamma.par.a}{Gamma  prior: shape and rate parameters for alpha}
 
-\item{unif.range.a}{Uniform prior: Maximum and minimum range for alpha }
+\item{unif.range.a}{Uniform prior: Minimum and maximum range for alpha }
 
 \item{priorbeta}{
 
@@ -71,9 +71,9 @@ Select the prior distribution for beta parameter(s) with the choice of "halfnorm
 
 \item{halfnorm.var.b}{Half normal prior variance for beta}
 
-\item{gamma.par.b}{Gamma  prior: shape and scale parameters for beta}
+\item{gamma.par.b}{Gamma  prior: shape and rate parameters for beta}
 
-\item{unif.range.b}{Uniform prior: Maximum and minimum range for beta}
+\item{unif.range.b}{Uniform prior: Minimum and maximum range for beta}
 
 
 \item{priorsp}{
@@ -82,9 +82,9 @@ Select the prior distribution for spark parameter with the choice of "halfnormal
 
 \item{halfnorm.var.sp}{Half normal prior variance for spark}
 
-\item{gamma.par.sp}{Gamma  prior: shape and scale parameters for spark}
+\item{gamma.par.sp}{Gamma  prior: shape and rate parameters for spark}
 
-\item{unif.range.sp}{Uniform prior: Maximum and minimum range for spark}
+\item{unif.range.sp}{Uniform prior: Minimum and maximum range for spark}
 
   \item{tempseed}{
 Integer seed value to initialize the (Fortran) random number generator, default value is  a random seed. 
@@ -132,7 +132,7 @@ mcout <- epimcmc(type = "SI", x = x, y = y, inftime = out$inftime, Sformula = ~c
 
 
 \references{
-Rob Deardon, Xuan Fang, and Grace Pui Suze Kwong (2014).
+Rob Deardon, Xuan Fang, and Grace P. S. Kwong (2014).
  Statistical modelling of spatio-temporal infectious disease tranmission in Analyzing and Modeling Spatial and Temporal Dynamics of Infectious Diseases,
  \emph{(Ed: D. Chen, B. Moulin, J. Wu), John Wiley & Sons.}. Chapter 11.
    

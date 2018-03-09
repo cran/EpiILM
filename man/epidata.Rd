@@ -122,9 +122,9 @@ epidata(type = "SIR", n = 100, tmax = 15, alpha = 0.3, beta = 5.0, infperiod = l
 
 ## Example 3:   SI network model 
 \dontrun{
-contact1 <- matrix(rbinom(1000, 1, 0.1), nrow = 100, ncol = 100)
+contact1 <- matrix(rbinom(10000, 1, 0.1), nrow = 100, ncol = 100)
 
-contact2 <- matrix(rbinom(1000, 1, 0.1), nrow = 100, ncol = 100)
+contact2 <- matrix(rbinom(10000, 1, 0.1), nrow = 100, ncol = 100)
 
 diag(contact1[,] ) <- 0
 
@@ -141,7 +141,7 @@ epidata(type = "SI", n = 100, tmax = 15, alpha = 0.3, beta = c(3.0, 5.0),
 
 Deardon R, Brooks, S. P., Grenfell, B. T., Keeling, M. J., Tildesley, M. J., Savill, N. J., Shaw, D. J.,  Woolhouse, M. E. (2010). Inference for individual level models of infectious diseases in large populations. \emph{Statistica Sinica}, 20, 239-261.
 
-Rob Deardon, Xuan Fang, and Grace Pui Suze Kwong (2014).
+Rob Deardon, Xuan Fang, and Grace P. S. Kwong (2014).
  Statistical modelling of spatio-temporal infectious disease transmission in analyzing and modeling Spatial and temporal dynamics of infectious diseases,
  \emph{(Ed: D. Chen, B. Moulin, J. Wu), John Wiley & Sons.} Chapter 11.
    
