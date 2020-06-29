@@ -58,16 +58,9 @@
     real (C_DOUBLE), intent(out):: val                         !result 
  
     integer (C_INT)          :: i, j, t 
-    real (C_DOUBLE) :: eu(n, n), Somega(n), Tomega(n) 
+    real (C_DOUBLE) :: Somega(n), Tomega(n) 
     real (C_DOUBLE) :: dx1, dx2, p1, p2 
  
-    !Calculate the distance matrix 
-    do i = 1, n 
-      do j = i, n 
-        eu(i,j) = sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) 
-        eu(j,i) = eu(i,j) 
-      end do 
-    end do 
  
     Somega = matmul(covmatsus,alpha) !susceptibility function 
     Tomega = matmul(covmattrans,phi) !transmissibility function 
@@ -76,22 +69,22 @@
     do t = tmin, (tmax-1) 
       do i = 1, n 
     !infectious period 
-        if (tau(i)==(t+1)) then 
+        if (tau(i) .eq. (t+1)) then 
           dx1 = 0.0_c_double 
           do j = 1, n 
             if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0)) then 
-              dx1 = dx1 + ((eu(i,j)**(-beta(ni)))*Tomega(j)) 
+              dx1 = dx1 + ((sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) **(-beta(ni)))*Tomega(j)) 
             end if 
           end do 
         p1 = 1.0_c_double - exp(-((Somega(i) * dx1) + spark)) 
         val = val + log(p1) 
         end if 
         !susceptible period 
-        if ((tau(i) .GT. (t+1)) .OR. (tau(i) == 0)) then 
+        if ((tau(i) .GT. (t+1)) .OR. (tau(i) .eq. 0)) then 
           dx2 = 0.0_c_double 
           do j = 1, n 
             if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0))then 
-              dx2 = dx2 + ((eu(i,j)**(-beta(ni)))*Tomega(j)) 
+              dx2 = dx2 + ((sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) **(-beta(ni)))*Tomega(j)) 
             end if 
           end do 
         p2 = exp(-((Somega(i) * dx2) + spark)) 
@@ -117,16 +110,9 @@
     real (C_DOUBLE), intent(out):: val                         !result 
  
     integer (C_INT) :: i, j, t 
-    real (C_DOUBLE) :: eu(n,n), Somega(n), Tomega(n) 
+    real (C_DOUBLE) :: Somega(n), Tomega(n) 
     real (C_DOUBLE) :: dx1, dx2, p1, p2 
  
-    !Calculate the distance matrix 
-    do i = 1, n 
-      do j = i, n 
-        eu(i,j) = sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) 
-        eu(j,i) = eu(i,j) 
-      end do 
-    end do 
  
     Somega = matmul(covmatsus, alpha) !susceptibility function 
     Tomega = matmul(covmattrans, phi) !transmissibility function 
@@ -135,12 +121,12 @@
     do t = tmin, (tmax-1) 
       do i = 1, n 
     !infectious period 
-        if (tau(i)==(t+1)) then 
+        if (tau(i) .eq. (t+1)) then 
           dx1 = 0.0_c_double 
             do j = 1, n 
               if (tau(j) .NE. 0) then 
                 if ((tau(j) .LT. (t+1)) .AND. (tau(j) + lambda(j) .GE. (t+1))) then 
-                  dx1 = dx1 + ((eu(i,j)**(-beta(ni)))*Tomega(j)) 
+                  dx1 = dx1 + ((sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) **(-beta(ni)))*Tomega(j)) 
                 end if 
               end if 
             end do 
@@ -148,12 +134,12 @@
          val = val + log(p1) 
         end if 
         !susceptible period 
-        if ((tau(i) .GT. (t+1)) .OR. (tau(i)== 0))then 
+        if ((tau(i) .GT. (t+1)) .OR. (tau(i) .eq. 0))then 
           dx2 = 0.0_c_double 
             do j = 1, n 
               if (tau(j) .NE. 0) then 
                 if ((tau(j) .LT. (t+1)) .AND. (tau(j)+lambda(j) .GE. (t+1)))then 
-                  dx2 = dx2 + ((eu(i,j)**(-beta(ni)))*Tomega(j)) 
+                  dx2 = dx2 + ((sqrt(((x(i)-x(j))**2) + ((y(i)-y(j))**2)) **(-beta(ni)))*Tomega(j)) 
                 end if 
               end if 
             end do 
@@ -190,7 +176,7 @@
     do t = tmin, (tmax-1) 
       do i = 1, n 
       !infectious period 
-        if (tau(i)==(t+1)) then 
+        if (tau(i) .eq. (t+1)) then 
          dx1 = 0.0_c_double 
             do j = 1, n 
               if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0)) then 
@@ -203,7 +189,7 @@
          val = val + log(p1) 
         end if 
         !susceptible period 
-        if ((tau(i) .GT. (t+1)) .OR. (tau(i)== 0))then 
+        if ((tau(i) .GT. (t+1)) .OR. (tau(i) .eq. 0))then 
          dx2 = 0.0_c_double 
             do j = 1, n 
               if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0))then 
@@ -245,7 +231,7 @@
     do t = tmin, (tmax-1) 
       do i = 1, n 
       !infectious period 
-        if (tau(i)==(t+1)) then 
+        if (tau(i) .eq. (t+1)) then 
          dx1 = 0.0_c_double 
             do j = 1, n 
               if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0) .AND. & 
@@ -259,7 +245,7 @@
          val = val + log(p1) 
         end if 
         !susceptible period 
-        if ((tau(i) .GT. (t+1)) .OR. (tau(i)== 0))then 
+        if ((tau(i) .GT. (t+1)) .OR. (tau(i) .eq. 0))then 
          dx2 = 0.0_c_double 
             do j = 1, n 
               if ((tau(j) .LT. (t+1)) .AND. (tau(j) .NE. 0) .AND.& 

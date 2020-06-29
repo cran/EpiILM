@@ -59,19 +59,11 @@
 
     integer (C_INT) :: i, j, t, tau(n), A
     real (C_DOUBLE) :: u, dx, p
-    real (C_DOUBLE) :: eu(n,n), Somega(n), Tomega(n)
+    real (C_DOUBLE) :: Somega(n), Tomega(n)
 
     !initialzing random seed
     call seedin()
 
-
-    !Calculate the distance matrix
-    do i = 1,n
-        do j = i,n
-            eu(i,j) = sqrt(((x(i)-x(j))**2)+((y(i)-y(j))**2))
-            eu(j,i) = eu(i,j)
-        end do
-    end do
 
     Somega = matmul(covmatsus, suspar) !susceptibility function
     Tomega = matmul(covmattrans, transpar) !transmissibility function
@@ -89,9 +81,10 @@
     do t = 1,tmax
         do i = 1,n
           dx = 0.0_c_double
-          if (tau(i)==0) then
+          if (tau(i) .eq. 0) then
               if ((tau(A) .LE. t) .and. ((tau(A)+lambda(A)) .GT. t)) then
-                dx = (eu(i,A)**(-beta(ni)))*Tomega(A)
+                dx = (sqrt(((x(i)-x(A))**2)+((y(i)-y(A))**2))**(-beta(ni)))*Tomega(A)
+!                dx = (eu(i,A)**(-beta(ni)))*Tomega(A)
                 p = 1.0_c_double - exp(-((Somega(i)*dx)+spark))
                 call randomnumber(u)
                 if (p .GT. u) then
@@ -160,7 +153,7 @@
     do t = 1, tmax
         do i = 1, n
           dx = 0.0_c_double
-          if (tau(i)==0) then
+          if (tau(i) .eq. 0) then
              if ((tau(A) .LE. t) .and. ((tau(A) + lambda(A)) .GT. t)) then
                 do k = 1, ni
                   dx = dx + ((beta(k) * network(i, A, k))*Tomega(A))
