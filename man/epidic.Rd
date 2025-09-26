@@ -43,7 +43,7 @@ out1 <- epidata(type = "SI", n = 100, Sformula = ~covariate, tmax = 15,
 unif_range <- matrix(c(0, 0, 10000, 10000), nrow = 2, ncol = 2)
 
 # estimate parameters
-mcmcout <- epimcmc(out1, tmax = 15, niter = 1500,
+mcmcout <- epimcmc(out1, tmax = 15, niter = 1000,
                     Sformula = ~covariate,   
                     sus.par.ini = c(0.003, 0.01), beta.ini =0.01,
                     pro.sus.var = c(0.1, 0.1),pro.beta.var = 0.5,
@@ -59,7 +59,7 @@ loglike <- epilike(out1, tmax = 15, Sformula = ~covariate, sus.par = sus.paramet
                    beta = beta.par)
 
 # deviance information criterion calculation for the above epidemic
-dic <- epidic(burnin = 500, niter = 1500, LLchain = mcmcout$Loglikelihood,
+dic <- epidic(burnin = 100, niter = 1000, LLchain = mcmcout$Loglikelihood,
               LLpostmean = loglike)
 dic
 

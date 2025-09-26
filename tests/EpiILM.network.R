@@ -11,13 +11,10 @@ for(i in 1:(n-1)) {
 	contact[i, ((i+1):n)] <- rbinom((n-i), 1, 0.05)
 	contact[((i+1):n), i] <- contact[i, ((i+1):n)]
 	}
-contact
 
 # Generating the susceptibility and transmissibilty covariates:
 X1 <- round(rexp(n, 1/100))
-X1
 X2 <- round(rgamma(n, 50, 0.5))
-X2
 # Simulate epidemic form SIR network-based ILM
 
 infp <- rep(3, n)
@@ -25,7 +22,6 @@ SIR.net <- epidata(type = "SIR", n = 500, tmax = 50,
      sus.par = c(0.003, 0.002), trans.par = c(0.0003, 0.0002),
      contact = contact, infperiod = infp,
      Sformula = ~ -1 + X1 + X2, Tformula = ~ -1 + X1 + X2)
-SIR.net
 
 # epimcmc function to estimate the model parameters:
 t_end <- max(SIR.net$inftime)
@@ -50,11 +46,10 @@ pred.SIR.net.point.5 <- pred.epi(SIR.net, xx = mcmcout_SIR.net, tmin = 5,
          Sformula = ~-1 + X1 + X2, Tformula = ~-1 + X1 + X2,
          criterion = "newly infectious",
          n.samples = 50)
-pred.SIR.net.point.5
 
 # Posterior prediction starting from time point 14
 pred.SIR.net.point.8 <- pred.epi(SIR.net, xx = mcmcout_SIR.net, tmin = 14,
         Sformula = ~-1 + X1 + X2, Tformula = ~-1 + X1 + X2,
         criterion = "newly infectious",
         n.samples = 50)
-pred.SIR.net.point.8
+

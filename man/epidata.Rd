@@ -2,7 +2,8 @@
 \alias{epidata}
 
 \title{
-Simulates epidemic for the specifiedmodel type and parameters
+Simulates epidemic for the specified
+model type and parameters
 }
 \description{
 This function allows the user to simulate epidemics under different models and scenarios
@@ -33,29 +34,40 @@ The time point at which simulation begins, default value is one.
 The last time point of simulation.
 }
 \item{sus.par}{
-Susceptibility parameter (>0).
+Susceptibility parameter (\eqn{>0}).
 }
 \item{trans.par}{
-Transmissibility parameter (>0).
+Transmissibility parameter (\eqn{>0}).
 }
   \item{beta}{
-Spatial parameter(s) (>0) or network parameter (s) (>0) if contact network is used.
+Spatial parameter(s) (\eqn{>0}) or network parameter (s) (\eqn{>0}) if contact network is used.
 }
 
 \item{spark}{
-Sparks parameter (>=0), representing infections unexplained by other partsof the model (eg. infections coming in from outside the observed population), default value is zero.
+Sparks parameter (\eqn{>=0}), representing infections unexplained by other parts
+of the model (eg. infections coming in from outside the observed population), default value is zero.
 }
 
 \item{Sformula}{
 An object of class formula. See \link{formula}.
 
-Individual-level covariate information associated with susceptibility can be passed through this argument. An expression of the form \code{ ~ model} is interpreted as a specification that the susceptibility function, \eqn{\Omega_S(i) }  is modelled by a linear predictor specified symbolically by the model term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. If there is no susceptibility covariate information, \code{Sformula} is null.
+Individual-level covariate information associated with susceptibility can be passed 
+through this argument. An expression of the form \code{ ~ model} is interpreted as 
+a specification that the susceptibility function, \eqn{\Omega_{S}(i)}  is modelled by 
+a linear predictor specified symbolically by the model term. Such a model consists of 
+a series of terms separated by \code{+} and \code{-} operators. If there is no susceptibility 
+covariate information, \code{Sformula} is null.
 
 }
 \item{Tformula}{
 An object of class formula. See \link{formula}.
 
-Individual-level covariate information associated with transmissibility can be passed through this argument. An expression of the form \code{ ~ -1+model} is interpreted as a specification that the transmissibility function, \eqn{\Omega_T(j) }  is modelled by a linear predictor specified symbolically by the model terms without the incorporation of the intercept term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. If there is no transmissibility covariate information, \code{Tformula} is null.
+Individual-level covariate information associated with transmissibility can be passed 
+through this argument. An expression of the form \code{ ~ -1+model} is interpreted as 
+a specification that the transmissibility function, \eqn{\Omega_{T}(j) }  is modelled by 
+a linear predictor specified symbolically by the model terms without the incorporation of 
+the intercept term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. 
+If there is no transmissibility covariate information, \code{Tformula} is null.
 
 }
   \item{x}{
@@ -83,17 +95,31 @@ We consider following two individual level models:
 
 {\bold{Spatial model:}}
 
-\deqn{P(i,t) =1- \exp\{-\Omega_S(i) \sum_{j \in I(t)}{\Omega_T(j)d_{ij}^{-\beta}- \varepsilon}\}}
+\deqn{P(i,t) = 1- \exp\{-\Omega_{S}(i) \sum_{j \in I(t)}{{\Omega_{T}(j)d_{ij}}^{-\beta}} - \varepsilon\}}
 
 {\bold{Network model:}}
 
-\deqn{P(i,t) =1- \exp\{-\Omega_S(i) \sum_{j \in I(t)}{\Omega_T(j)(\beta_1 C^{(1)}_{ij}} + \dots + \beta_n  C^{(n)}_{ij} )- \varepsilon\}}
+\deqn{P(i,t) = 1- \exp\{-\Omega_{S}(i) \sum_{j \in I(t)}{\Omega_{T}(j)(\beta_{1} C^{(1)}_{ij} + \dots + \beta_{n}  C^{(n)}_{ij} )}- \varepsilon\}}
 
-where \eqn{P(i,t)} is the probability that susceptible individual i is infected at time point t, becoming infectious at time t+1; 
-\eqn{\Omega_S(i)} is  a susceptibility function which accommodates potential risk factors associated with susceptible individual i contracting the disease; \eqn{\Omega_T(j)} is  a transmissibility function which accommodates potential risk factors associated with infectious individual j; \eqn{\varepsilon} is a sparks term which represents infections originating from outside the population being observed or some other unobserved infection mechanism. 
+where \eqn{P(i,t)} is the probability that susceptible individual i is infected at time point t, 
+becoming infectious at time t+1;\eqn{\Omega_{S}(i)} is a susceptibility function which accommodates 
+potential risk factors associated with susceptible individual i contracting the disease; 
+\eqn{\Omega_{T}(j)} is  a transmissibility function which accommodates potential risk factors 
+associated with infectious individual j; \eqn{\varepsilon} is a sparks term which represents 
+infections originating from outside the population being observed or some other unobserved infection mechanism. 
 
-The susceptibility function can incorporate any individual-level covariates  of interest and \eqn{\Omega_S(i)} is treated as a linear function of the covariates, i.e., \eqn{\Omega_S(i) = \alpha_0 + \alpha_1 X_1(i) + \alpha_2 X_2 (i) + \dots  + 
-\alpha_{n_s} X_{n_s} (i)}, where \eqn{X_1(i), \dots, X_{n_s} (i)} denote  \eqn{n_s}covariates associated with susceptible individual $i$, along with susceptibility parameters \eqn{\alpha_0,\dots,\alpha_{n_s} >0}. If the model does not contain any susceptibility covariates then  \eqn{\Omega_S(i) = \alpha_0} is used. In a similar way, the transmissibility function can incorporate any individual-level covariates of interest associated with infectious individual. \eqn{\Omega_T(j)} is also treated as a linear function of the covariates, but without the intercept term, i.e., \eqn{\Omega_T(j) = \phi_1 X_1(j) + \phi_2 X_2 (j) + \dots  + \phi_{n_t} X_{n_t} (j)}, where \eqn{X_1(j), \dots, X_{n_t} (j)} denote  the \eqn{n_t} covariates associated with  infectious individual j, along with transmissibility parameters \eqn{\phi_1,\dots,\phi_{n_t} >0}. If the model does not contain any transmissibility covariates then  \eqn{\Omega_T(j)  = 1} is used.
+The susceptibility function can incorporate any individual-level covariates  of interest and 
+\eqn{\Omega_{S}(i)} is treated as a linear function of the covariates, i.e., 
+\eqn{\Omega_{S}(i) = \alpha_{0} + \alpha_1 X_{1}(i) + \alpha_{2} X_{2} (i) + \dots  + \alpha_{n_{s}} X_{n_{s}} (i)}, 
+where \eqn{X_{1}(i), \dots, X_{n_{s}} (i)} denote \eqn{n_{s}} covariates associated with 
+susceptible individual \eqn{i}, along with susceptibility parameters \eqn{\alpha_{0},\dots,\alpha_{n_s} >0}. 
+If the model does not contain any susceptibility covariates then  \eqn{\Omega_{S}(i) = \alpha_{0}} is used. 
+In a similar way, the transmissibility function can incorporate any individual-level covariates of interest 
+associated with infectious individual. \eqn{\Omega_{T}(j)} is also treated as a linear function of the covariates, 
+but without the intercept term, i.e., \eqn{\Omega_{T}(j) = \phi_{1} X_{1}(j) + \phi_{2} X_{2} (j) + \dots  + \phi_{n_{t}} X_{n_{t}} (j)}, 
+where \eqn{X_{1}(j), \dots, X_{n_{t}} (j)} denote  the \eqn{n_{t}} covariates associated with  infectious 
+individual j, along with transmissibility parameters \eqn{\phi_{1},\dots,\phi_{n_{t}} >0}. If the model 
+does not contain any transmissibility covariates then  \eqn{\Omega_{T}(j)  = 1} is used.
 
 
 }

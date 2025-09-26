@@ -15,13 +15,17 @@ pred.epi (object, xx, criterion , n.samples, burnin = NULL, tmin = NULL,
 
 \arguments{
   \item{object}{
-An object of class \code{epidata} that can be the output of \code{\link{epidata}} or \code{\link{as.epidata}}
+An object of class \code{epidata} that can be the output of \code{\link{epidata}} or 
+\code{\link{as.epidata}}
 }
   \item{xx}{
   		An object of class \code{epimcmc} that is the output of \code{\link{epimcmc}}.
 }
   \item{criterion}{
-The (multivariate) statistical criteria used in the posterior predictive check. It has three options: ``newly infectious'' which is a multivariate statistics represented by the number of newly infectious individuals over time, ``epidemic length'' represents the length of epidemic, and ``peak time'' represents the time of the peak of epidemic.
+The (multivariate) statistical criteria used in the posterior predictive check. 
+It has three options: ``newly infectious'' which is a multivariate statistics represented 
+by the number of newly infectious individuals over time, ``epidemic length'' represents 
+the length of epidemic, and ``peak time'' represents the time of the peak of epidemic.
 }
   \item{n.samples}{
 The number of epidemics that needs to be simulated in the posterior predictive check procedure.
@@ -35,12 +39,22 @@ A scalar value which represents the number of samples needs to be discarded from
 \item{Sformula}{
 An object of class formula. See \link{formula}.
 
-Individual-level covariate information associated with susceptibility can be passed through this argument. An expression of the form \code{ ~ model} is interpreted as a specification that the susceptibility function, \eqn{\Omega_S(i) }  is modelled by a linear predictor specified symbolically by the model term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. If there is no susceptibility covariate information, \code{Sformula} is null.
+Individual-level covariate information associated with susceptibility can be passed 
+through this argument. An expression of the form \code{ ~ model} is interpreted as 
+a specification that the susceptibility function, \eqn{\Omega_S(i) }  is modelled by 
+a linear predictor specified symbolically by the model term. Such a model consists of 
+a series of terms separated by \code{+} and \code{-} operators. If there is no susceptibility 
+covariate information, \code{Sformula} is null.
 }
 \item{Tformula}{
 An object of class formula. See \link{formula}.
 
-Individual-level covariate information associated with transmissibility can be passed through this argument. An expression of the form \code{ ~ -1+model} is interpreted as a specification that the transmissibility function, \eqn{\Omega_T(j) }  is modelled by a linear predictor specified symbolically by the model terms without the incorporation of the intercept term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. If there is no transmissibility covariate information, \code{Tformula} is null.
+Individual-level covariate information associated with transmissibility can be passed 
+through this argument. An expression of the form \code{ ~ -1+model} is interpreted as 
+a specification that the transmissibility function, \eqn{\Omega_T(j) }  is modelled by 
+a linear predictor specified symbolically by the model terms without the incorporation of 
+the intercept term. Such a model consists of a series of terms separated by \code{+} and \code{-} operators. 
+If there is no transmissibility covariate information, \code{Tformula} is null.
 }
 
 \item{showProgressBar}{

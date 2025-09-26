@@ -71,36 +71,49 @@ Individual-level covariate information associated with transmissibility can be p
 	Proposal density variance for the spark parameter.
 }
 \item{prior.sus.dist}{
-Select the prior distribution(s) for the susceptibility parameter(s) with the choice of "halfnormal" for positive half normal distribution, "gamma"  for gamma distribution and "uniform" for uniform distribution
+Select the prior distribution(s) for the susceptibility parameter(s) with the choice 
+of "halfnormal" for positive half normal distribution, "gamma" for gamma distribution 
+and "uniform" for uniform distribution
 }
 \item{prior.trans.dist}{
-Select the prior distribution(s) for the transmissibility parameter(s) with the choice of "halfnormal" for positive half normal distribution, "gamma"  for gamma distribution and "uniform" for uniform distribution
+Select the prior distribution(s) for the transmissibility parameter(s) with the choice 
+of "halfnormal" for positive half normal distribution, "gamma" for gamma distribution 
+and "uniform" for uniform distribution
 }
 \item{prior.beta.dist}{
-	Select the prior distribution(s) for the beta parameter(s) with the choice of "halfnormal" for half normal distribution, "gamma"  for gamma distribution and "uniform" for uniform distribution
-	}
+Select the prior distribution(s) for the beta parameter(s) with the choice of "halfnormal" 
+for half normal distribution, "gamma" for gamma distribution and 
+"uniform" for uniform distribution
+}
 
 \item{prior.spark.dist}{
-	Select the prior distribution for the spark parameter with the choice of "halfnormal" for half normal distribution, "gamma"  for gamma distribution and "uniform" for uniform distribution
-	}
+Select the prior distribution for the spark parameter with the choice of "halfnormal" 
+for half normal distribution, "gamma" for gamma distribution and 
+"uniform" for uniform distribution
+}
 \item{prior.sus.par}{
-A vector (matrix) of the prior distribution parameters for updating the susceptibility parameter(s).
+A vector (matrix) of the prior distribution parameters for updating 
+the susceptibility parameter(s).
 }
 \item{prior.trans.par}{
-A vector (matrix) of the prior distribution parameters for updating the transmissibility parameter(s).
+A vector (matrix) of the prior distribution parameters for updating 
+the transmissibility parameter(s).
 }
 
 \item{prior.beta.par}{
-	A vector (matrix) of the prior distribution parameters for updating the kernel parameter(s).
+	A vector (matrix) of the prior distribution parameters for updating 
+	the kernel parameter(s).
 	}
 \item{prior.spark.par}{
 	A vector of the prior distribution parameters for updating the spark parameter.
 	}
 \item{adapt}{
-	To enable the adaptive MCMC method in the \code{\link{MCMC}} function, default is FALSE.
+	To enable the adaptive MCMC method in the \code{\link[adaptMCMC:MCMC]{MCMC}} function, 
+	default is FALSE.
 	}
 \item{acc.rate}{
-	To set an acceptance rate. This option will be ignored if \code{adapt} = FALSE. See \code{\link{MCMC}} for more details.
+	To set an acceptance rate. This option will be ignored if \code{adapt} = FALSE. 
+	See \code{\link[adaptMCMC:MCMC]{MCMC}} for more details.
  	}
 }
 
@@ -121,7 +134,8 @@ Returns an object of class \code{epimcmc} that contains:
 
 \details{
 
-Independent Gaussian random walks are used as the Metropolis-Hastings MCMC proposal for all parameters. The \code{epimcmc} function depends on the \code{\link{MCMC}} function from the \pkg{\link{adaptMCMC}} package.
+Independent Gaussian random walks are used as the Metropolis-Hastings MCMC proposal for 
+all parameters. The \code{epimcmc} function depends on the \code{\link[adaptMCMC:MCMC]{MCMC}} function.
 
 }
 \seealso{
@@ -148,7 +162,7 @@ alphapar1 <- matrix(c(1, 1, 1, 1), ncol = 2, nrow = 2)
 betapar1 <- c(10, 2)
 
 epi <- epimcmc(object = out1, tmin = 1, tmax = 15,
-               niter = 1000, sus.par.ini = c(1, 1), beta.ini = 1,
+               niter = 500, sus.par.ini = c(1, 1), beta.ini = 1,
                Sformula = ~covariate, pro.sus.var = c(0.5, 0.3), pro.beta.var = 0.1,
                prior.sus.dist = c("gamma", "gamma"), prior.beta.dist = "gamma",
                prior.sus.par = alphapar1, prior.beta.par = betapar1,
@@ -159,14 +173,14 @@ epi
 
 lambda <- rep(3, 100)
 
-out2 <- epidata(type = "SIR", n = 100, tmax = 15, sus.par = 0.3, beta = 5.0, infperiod = lambda,
-        x = x, y = y)
+out2 <- epidata(type = "SIR", n = 100, tmax = 15, sus.par = 0.3, beta = 5.0,
+        infperiod = lambda,x = x, y = y)
 
 alphapar2 <- c(1, 1)
 betapar2 <- c(1, 1)
 
 epi2 <- epimcmc(object = out2, tmin = 1, tmax = 15,
-               niter = 1000, sus.par.ini = 1, beta.ini = 1,
+               niter = 500, sus.par.ini = 1, beta.ini = 1,
                Sformula = NULL, pro.sus.var = 0.3, pro.beta.var = 0.1,
                prior.sus.dist = "gamma", prior.beta.dist = "gamma",
                prior.sus.par = alphapar2, prior.beta.par = betapar2,

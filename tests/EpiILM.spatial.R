@@ -3,16 +3,12 @@ library("EpiILM")
 set.seed(789)
 # generating the XY coordinates of individuals:
 x  <-  runif(256,  0, 100)
-x
 y  <-  runif(256,  0, 100)
-y
 
 # generating the sus. covariate:
 A <- round(rexp(256, 1/100))
-A
 # simulating an epidemic:
 out_cov <- epidata(type = "SI", n = 256, tmax = 10, x = x, y = y, Sformula = ~A, sus.par = c(0.01, 0.05), beta = 2)
-out_cov
 
 # performing the MCMC using the epimcmc function:
 t_end <- max(out_cov$inftime)
@@ -41,7 +37,6 @@ summary(mcmcout_M9)
 
 #set.seed(23456)
 predepi1<-pred.epi(object = out_cov, xx = mcmcout_M8, criterion = "newly infectious", n.samples = 50, tmin = 1, Sformula = ~A)
-predepi1
 
 loglike1 <- epilike(object = out_cov, tmax = t_end, Sformula = ~A, sus.par = c(0.08806, 0.04421), beta = 1.96839)
 loglike2 <- epilike(object = out_cov, tmax = t_end, sus.par = 0.735, beta = 1.554)

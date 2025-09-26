@@ -10,14 +10,14 @@
 \arguments{
   \item{x}{An S3 object of class \code{epimcmc} (i.e. the output of the \code{epimcmc} function).}
   \item{partype}{Determines which of two options to plot the output of the \code{epimcmc} function are used: ``parameter'' produces trace plots for each of the model parameters, and ``loglik'' produces trace plot of the log-likelihood of the MCMC samples.}
-  \item{start, end, thin}{options for creating \code{\link{mcmc}} object.}
+  \item{start, end, thin}{options for creating \code{\link[coda:mcmc]{mcmc}} object.}
   \item{...}{additional arguments that are passed to the generic \code{plot} function.}
 }
 \value{
 plot.
 }
 \seealso{
-  \code{\link{epimcmc}}, \code{\link{summary.epimcmc}}, \code{\link{mcmc}}, \code{\link{plot.mcmc}}.
+  \code{\link{epimcmc}}, \code{\link{summary.epimcmc}}, \code{\link[coda:mcmc]{mcmc}}, \code{\link[coda:plot.mcmc]{plot.mcmc}}.
 }
 \keyword{plot}
 

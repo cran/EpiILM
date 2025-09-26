@@ -5,7 +5,9 @@
 Discrete Time level information of an Epidemic
 }
 \description{
-This function allows the user to generate objects of class \code{"epidata"}. The output of this function provides information required to be used in the other functions in the package.
+This function allows the user to generate objects of class \code{"epidata"}. 
+The output of this function provides information required to be used in the other 
+functions in the package.
 }
 \usage{
 as.epidata (type, n, x = NULL, y = NULL, inftime, infperiod = NULL, contact = NULL)
