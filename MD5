@@ -1,4 +1,4 @@
-2059b6419843e0b9400995766506cc73 *DESCRIPTION
+c731bff65fe0af9c53f647c95f7cee87 *DESCRIPTION
 ffd174d10a660ed9ff87712bf551b322 *NAMESPACE
 73c151c9af6436e2a16913feb9c5f38f *R/as.epidata.r
 ba6450bd3b6b13fbede23646942aefa1 *R/epiBR0.r
@@ -8,7 +8,7 @@ dc59f45dc94bdbab258ea55a34e500ba *R/epilike.r
 104e013de93d3513a85ec6a2f19221cb *R/epimcmc.r
 d5ea2384251f4ac6841ab1fcf528d2d4 *R/epiplot.r
 09a588c9761de8348345927f7935355c *R/pred.epi.r
-d99f467d0d422e6acece15c95b225b31 *build/partial.rdb
+37dd47d0c7f20d32bb2dc85c6e424fcf *build/partial.rdb
 f31f51b61b6088b71d1f9b39aa1889e1 *build/vignette.rds
 68d3315e01efc2023a582d42e1ccb3fd *data/tswv.txt.gz
 7390f64f79f30dd4d2499cda2a53fc35 *demo/00Index
@@ -16,7 +16,7 @@ f31f51b61b6088b71d1f9b39aa1889e1 *build/vignette.rds
 513e8d9f48af32b91267b70c7c4383ae *demo/EpiILM.spatial.R
 d080227719d2be204ed152d2be102e29 *inst/doc/Predict.R
 88e13e83809b5e7aa36c81a34db8f912 *inst/doc/Predict.Rnw
-0abfa76967eb9e989b1dae0f48d1891e *inst/doc/Predict.pdf
+327be529208b45b9783d4c8ac0abcd34 *inst/doc/Predict.pdf
 d1a5e138c6cc5b5ac1b6a5bea62b8325 *man/EpiILM-package.Rd
 13292b936933a5b81b4211b5809a4a87 *man/as.epidata.Rd
 805aa8ffc61d33f38795cf4c26d57b06 *man/epiBR0.Rd
